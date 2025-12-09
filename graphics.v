@@ -91,6 +91,9 @@ always @(*) begin
 	else if(paddle_on) begin
 		rgb_data = COLOR_PADDLE;
 	end
+	else if(block_on) begin
+		rgb_data = block_color;
+	end
 	else begin
 		rgb_data = COLOR_BLACK;
 	end

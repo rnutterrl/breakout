@@ -36,6 +36,9 @@ parameter BLOCK_WIDTH = 120,
 reg signed [10:0] ball_vx;
 reg signed [10:0] ball_vy;
 
+reg signed [10:0] next_ball_x;
+reg signed [10:0] next_ball_y;
+
 reg game_started;
 
 integer i, j;
@@ -64,36 +67,50 @@ always @(posedge clk) begin
 					paddle_x <= paddle_x + PADDLE_SPEED;
 				
 					//ball position update
-					ball_x <= ball_x + ball_vx;
-					ball_y <= ball_y + ball_vy;
+					next_ball_x = $signed ({1'b0, ball_x})+ ball_vx;
+					next_ball_y = $signed ({1'b0, ball_y})+ ball_vy;
 					
 					//collision control
-					if(ball_x <= 0 || ball_x >= (SCREEN_WIDTH - BALL_SIZE))
-						ball_vx <= -ball_vx;
-					if(ball_y <= 0)
-						ball_vy <= -ball_vy;
-						
-					if(ball_y + BALL_SIZE >= PADDLE_Y && 
-						ball_y + BALL_SIZE <= PADDLE_Y + PADDLE_HEIGHT && 
+					if(next_ball_x <= 0) begin
+						ball_vx <= BALL_SPEED_X;
+						next_ball_x = 0;
+					end
+					else if(next_ball_x >= (SCREEN_WIDTH - BALL_SIZE)) begin
+						ball_vx <= -BALL_SPEED_X;
+						next_ball_x = SCREEN_WIDTH - BALL_SIZE;
+					end
+					
+					if(next_ball_y <= 0) begin
+						ball_vy <= BALL_SPEED_Y;
+						next_ball_y = 0;
+					end
+					
+					if(next_ball_y + BALL_SIZE >= PADDLE_Y && 
+						next_ball_y <= PADDLE_Y + PADDLE_HEIGHT && 
 						ball_x + BALL_SIZE >= paddle_x && 
 						ball_x <= paddle_x + PADDLE_WIDTH) begin
 						ball_vy <= -BALL_SPEED_Y;
-						ball_y <= PADDLE_Y - BALL_SIZE;
+						next_ball_y = PADDLE_Y - BALL_SIZE;
 					end
 					
 					for(i=0; i< BLOCK_ROWS; i=i+1) begin
-						for(j=0; j < BLOCK_COLS; j=j+1) begin
-							if(blocks[i*BLOCK_COLS + j]) begin
-								block_x <= BLOCK_SPACING_X + j *(BLOCK_WIDTH + BLOCK_SPACING_X);
-								block_y <= BLOCK_SPACING_Y + i *(BLOCK_HEIGHT + BLOCK_SPACING_Y);
+						for(j=0; j< BLOCK_COLS; j=j+1) begin
+							if(blocks[i*BLOCK_COLS+j]) begin
+								block_x = BLOCK_SPACING_X + j *(BLOCK_WIDTH + BLOCK_SPACING_Y);
 								
-								if(ball_x + BALL_SIZE >= block_x && ball_x <= block_x + BLOCK_WIDTH && ball_y + BALL_SIZE >= block_y && ball_y <= block_y + BLOCK_HEIGHT) begin 
-								blocks[i*BLOCK_COLS + j] <= 0;
-								ball_vy <= -ball_vy;
+								if(next_ball_x + BALL_SIZE >= block_x &&
+									next_ball_x <= block_x + BLOCK_WIDTH &&
+									next_ball_y + BALL_SIZE >= block_y &&
+									next_ball_y <= block_y + BLOCK_HEIGHT) begin
+									blocks[i*BLOCK_COLS+j] <= 0;
+									ball_vy <= -ball_vy;
+								end
 							end
 						end
 					end
-				end 
+					
+					ball_x <= next_ball_x[9:0];
+					ball_y <= next_ball_y[9:0];
 					
 					if(ball_y >= SCREEN_HEIGHT)
 						game_over <= 1;
