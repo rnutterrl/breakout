@@ -96,7 +96,8 @@ always @(posedge clk) begin
 					for(i=0; i< BLOCK_ROWS; i=i+1) begin
 						for(j=0; j< BLOCK_COLS; j=j+1) begin
 							if(blocks[i*BLOCK_COLS+j]) begin
-								block_x = BLOCK_SPACING_X + j *(BLOCK_WIDTH + BLOCK_SPACING_Y);
+								block_x = BLOCK_SPACING_X + j *(BLOCK_WIDTH + BLOCK_SPACING_X);
+								block_y = BLOCK_SPACING_Y + i*(BLOCK_HEIGHT + BLOCK_SPACING_Y);
 								
 								if(next_ball_x + BALL_SIZE >= block_x &&
 									next_ball_x <= block_x + BLOCK_WIDTH &&
@@ -118,3 +119,4 @@ always @(posedge clk) begin
 				end
 			end
 endmodule 
+
