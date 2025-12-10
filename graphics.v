@@ -15,12 +15,12 @@ output reg [7:0] vga_b);
 
 parameter PADDLE_WIDTH = 70, PADDLE_HEIGHT = 10, PADDLE_Y = 450, BALL_SIZE = 8;
 
-parameter BLOCK_WIDTH = 120,
+parameter BLOCK_WIDTH = 100,
 				BLOCK_HEIGHT = 20,
 				BLOCK_START_Y = 50,
 				BLOCK_ROWS = 8,
 				BLOCK_COLS = 5,
-				BLOCK_SPACING_X = 8,
+				BLOCK_SPACING_X = 20,
 				BLOCK_SPACING_Y = 5;
 				
 parameter COLOR_BLACK = 24'h000000,
@@ -111,4 +111,5 @@ always @(posedge clk) begin
 		vga_b <= rgb_data[7:0];
 	end
 end 
+
 endmodule 
