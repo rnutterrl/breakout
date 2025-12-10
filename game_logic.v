@@ -24,12 +24,12 @@ parameter BALL_SIZE = 8,
 		BALL_SPEED_Y = 2;
 		
 //block parameters
-parameter BLOCK_WIDTH = 120,
+parameter BLOCK_WIDTH = 100,
 		BLOCK_HEIGHT = 20,
 		BLOCK_START_Y = 50,
 		BLOCK_ROWS = 8,
 		BLOCK_COLS = 5,
-		BLOCK_SPACING_X = 8,
+		BLOCK_SPACING_X = 20,
 		BLOCK_SPACING_Y = 5;
 		
 //reg signed will counter in negative numbers
@@ -119,4 +119,5 @@ always @(posedge clk) begin
 				end
 			end
 endmodule 
+
 
