@@ -42,20 +42,20 @@ reg block_on;
 reg [23:0] block_color;
 
 integer i, j;
-reg [9:0] block_x, block_y;
+integer block_x, block_y;
 
 assign paddle_on = (x >= paddle_x && x < paddle_x + PADDLE_WIDTH && y >= PADDLE_Y && y < PADDLE_Y + PADDLE_HEIGHT);
 assign ball_on = (x >= ball_x && x < ball_x + BALL_SIZE && y >= ball_y && y < ball_y + BALL_SIZE);
 
 always @(*) begin
 	block_on = 0;
-	block_color = COLOR_BLACK;
+	block_color = COLOR_WHITE;
 	
 	for (i=0; i < BLOCK_ROWS; i=i+1) begin
 		for(j=0; j < BLOCK_COLS; j=j+1) begin
 			if(blocks[i * BLOCK_COLS + j]) begin
 				block_x = BLOCK_SPACING_X + j * (BLOCK_WIDTH + BLOCK_SPACING_X);
-				block_y = BLOCK_START_Y + i * (BLOCK_HEIGHT + BLOCK_SPACING_Y);
+				block_y = BLOCK_SPACING_Y + i * (BLOCK_HEIGHT + BLOCK_SPACING_Y);
 		
 				if(x >= block_x && x < block_x + BLOCK_WIDTH && y >= block_y && y < block_y + BLOCK_HEIGHT) begin
 					block_on = 1;

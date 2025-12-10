@@ -53,9 +53,6 @@ assign paddle_control[3] = 1'b0;
 
 
 always @(posedge CLOCK_50) begin
-	if (rst) 
-		clk_25mhz <= 1'b0;
-	else
 		clk_25mhz <= ~clk_25mhz;
 end
 
@@ -69,7 +66,7 @@ always @(posedge clk_25mhz) begin
 		frame_tick_reg <= 1'b0;
 	end
 	else begin
-		if(frame_counter == 20'd41666) begin
+		if(frame_counter == 20'd416666) begin
 			frame_counter <= 20'b0;
 			frame_tick_reg <= 1'b1;
 		end
@@ -105,5 +102,4 @@ assign LEDR[1] = frame_tick;
 assign LEDR[9:2] = 8'b0;
 
 endmodule
-
 	
