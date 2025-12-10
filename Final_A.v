@@ -47,8 +47,8 @@ end
 
 //paddle control
 assign paddle_control[0] = key_sync[0][1]; //starts paddle
-assign paddle_control[1] = key_sync[1][1]; //moves paddle left
-assign paddle_control[2] = key_sync[2][1]; //moves paddle right
+assign paddle_control[1] = key_sync[2][1]; //moves paddle left
+assign paddle_control[2] = key_sync[1][1]; //moves paddle right
 assign paddle_control[3] = 1'b0;
 
 
@@ -105,4 +105,5 @@ assign LEDR[1] = frame_tick;
 assign LEDR[9:2] = 8'b0;
 
 endmodule
+
 	
